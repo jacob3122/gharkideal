@@ -7,6 +7,9 @@ import { User } from './users/entities/user.entity';
 import { ServiceProviderModule } from './service-provider/service-provider.module';
 import { AuthModule } from './auth/auth.module';
 import { ServiceProvider } from './service-provider/entities/service-provider.entity';
+import { UserProfile } from './users/entities/user-profile.entity';
+import { CreateUserProfileDto } from './users/dto/create-user-profile.dto';
+import { ServiceProviderProfile } from './service-provider/entities/service-provider-profile.entity';
 
 @Module({
   imports: [
@@ -17,7 +20,7 @@ import { ServiceProvider } from './service-provider/entities/service-provider.en
       username: 'postgres',
       password: '2024',
       database: 'garkideal',
-      entities: [User,ServiceProvider],
+      entities: [User,ServiceProvider,UserProfile,ServiceProviderProfile],
       synchronize: true,
     }),
     UsersModule,

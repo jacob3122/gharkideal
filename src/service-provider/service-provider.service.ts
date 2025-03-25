@@ -1,11 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { CreateServiceProviderDto } from './dto/create-service-provider.dto';
+import { ServiceProviderProfileDto } from './dto/create-service-provider.dto';
 import { UpdateServiceProviderDto } from './dto/update-service-provider.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ServiceProviderProfile } from './entities/service-provider-profile.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ServiceProviderService {
-  create(createServiceProviderDto: CreateServiceProviderDto) {
-    return 'This action adds a new serviceProvider';
+  create(createServiceProviderDto: ServiceProviderProfileDto) {
+    throw new Error('Method not implemented.');
+  }
+  constructor (
+    @InjectRepository(ServiceProviderProfile)
+    private readonly serviceProviderRepository: Repository<ServiceProviderProfile>,
+  ){}
+
+
+  async createServiceProviderProfile(serviceProfileDto: ServiceProviderProfileDto): Promise<ServiceProviderProfile> {
+    const serviceProviderProfile = this.serviceProviderRepository.create(serviceProfileDto);
+    return this.serviceProviderRepository.save(serviceProviderProfile);
   }
 
   findAll() {

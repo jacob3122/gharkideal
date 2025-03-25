@@ -1,15 +1,16 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ServiceProviderService } from './service-provider.service';
-import { CreateServiceProviderDto } from './dto/create-service-provider.dto';
+import { ServiceProviderProfileDto } from './dto/create-service-provider.dto';
 import { UpdateServiceProviderDto } from './dto/update-service-provider.dto';
 
 @Controller('service-provider')
 export class ServiceProviderController {
   constructor(private readonly serviceProviderService: ServiceProviderService) {}
 
-  @Post()
-  create(@Body() createServiceProviderDto: CreateServiceProviderDto) {
-    return this.serviceProviderService.create(createServiceProviderDto);
+  @Post('/create-service-provider')
+  async createServiceProvider(@Body() createServiceProviderProfileDto: ServiceProviderProfileDto) {
+    const serviceProviderProfile = await this.serviceProviderService.createServiceProviderProfile(createServiceProviderProfileDto);
+    return { message: 'Service Provider profile created successfully', serviceProviderProfile };
   }
 
   @Get()

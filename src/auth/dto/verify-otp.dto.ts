@@ -13,6 +13,7 @@ export class VerifyOtpDto {
   @ApiProperty()
   otp: string;
 
+
   @IsString()
   @ApiProperty()
   @IsIn(['user', 'service_provider'])

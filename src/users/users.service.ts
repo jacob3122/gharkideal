@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserProfileDto } from './dto/create-user-profile.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm/repository/Repository';
 import { UserProfile } from './entities/user-profile.entity';
 import { retry } from 'rxjs';
+import { profile } from 'console';
 
 @Injectable()
 export class UsersService {
@@ -18,9 +19,19 @@ export class UsersService {
   ) { }
 
 
-  async createUserProfile(createUserDto: CreateUserProfileDto): Promise<UserProfile> {
-    const userProfile = this.userProfileRepository.create(createUserDto);
-    return this.userProfileRepository.save(userProfile);
+  // async createUserProfile(createUserDto: CreateUserProfileDto): Promise<UserProfile> {
+  //   const userProfile = this.userProfileRepository.create(createUserDto);
+  //   return this.userProfileRepository.save(userProfile);
+  // }
+
+  async createUser(createUserDto:CreateUserProfileDto ): Promise<UserProfile> {
+   // Create new user
+    const user = new User()
+    user.email = createUserDto.email;
+    user.address = createUserDto.address;
+    user.fullname = createUserDto.fullName;
+    user.zone =  createUserDto.zone;
+
   }
 
 
@@ -40,16 +51,32 @@ export class UsersService {
     return profile;
   }
 
-  async updateProfile(id: string, updateUserDto: UpdateUserDto): Promise<UserProfile> {
-    const existingUser = await this.findOne(id);
-    const userData = this.userProfileRepository.merge(
-      existingUser,
-      updateUserDto,
-    );
-    return await this.userProfileRepository.save(
-      userData,
-    );
-  }
+  // async update(id: string, updateUserDto: UpdateUserDto): Promise<UserProfile> {
+  //   const existingUser = await this.findOne(id);
+  //   const userData = this.userProfileRepository.merge(
+  //     existingUser,
+  //     updateUserDto,
+  //   );
+  //   return await this.userProfileRepository.save(
+  //     userData,
+  //   );
+  // }
+
+  async updateProfile(id: string, updateUserDto:UpdateUserDto):Promise<UserProfile>{
+    //find the user 
+    const user = await this.userRepository.findOne({
+      where: {id:id},
+      relations:['profile']
+    }) 
+    if(!user){
+      throw new NotFoundException('User not found');
+    }
+
+    //update profile
+    if(!user.profile){
+      user.profile = new Profi le()
+    }
+   }
 
   async remove(id: string) {
     const existingUser = await this.findOne(id);

@@ -34,7 +34,7 @@ export class UsersController {
   @Patch('/update-profile/:id')
   async update(@Param('id') id: string ,@Param("authtoken") authtoken:string,
    @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.updateProfile(id, updateUserDto);
+    return await this.usersService.update(id, updateUserDto);
   }
 
   @Delete('/remove/:id')
